@@ -1,6 +1,12 @@
 //dependencies
 const express = require('express');
+const mongoose = require('mongoose');
 
+//db configs
+const db = require('./configs/keys').mongoURI;
+
+//Connection to mongodb
+mongoose.connect(db).then(() => console.log('Succesfully connected to db!'));
 //vars
 const app = express();
 const port = process.env.PORT || 5000;
