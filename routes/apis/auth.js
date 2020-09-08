@@ -17,12 +17,15 @@ router.post("/register", (req, res) => {
     if (user)
       return res.status(400).json({ message: "User already registered" });
     else {
-      const avatar = gravatar(req.body.email, {
+      //check if user has a gravatar email - otherwise use a default img
+      const avatar = gravatar.url(req.body.email, {
         s: 100, // Size
         r: "pg", // Rating
         d: "mm", // Default
       });
-      const user = new User({
+
+      //create user since we dont have them in db already
+      const newUser = new User({
         name: req.body.name,
         email: req.body.email,
         avatar,
@@ -30,12 +33,14 @@ router.post("/register", (req, res) => {
         date: Date.now,
       });
 
-      const salt = bcryptjs.genSalt(10);
-      bcryptjs.hash(user.password, salt, (err, hash) => {
-        user.password = hash;
+      //encrypt their pw before sending to db
+      bcryptjs.genSalt(10, (err, salt) => {
+        bcryptjs.hash(newUser.password, salt, (err, hash) => {
+          if (err) throw err;
+          newUser.password = hash;
+          newUser.save().then((user) => res.json(user)).catch((err) => console.log(err));
+        });
       });
-
-      User.save(user);
     }
   });
 });
