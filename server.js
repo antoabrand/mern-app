@@ -2,15 +2,20 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
+//resources
+const auth = require("./routes/apis/auth");
+const profile = require("./routes/apis/profile");
+const posts = require("./routes/apis/social-posts");
+
 //db configs
 const db = require("./configs/keys").mongoURI;
 
-//Connection to mongodb
+//Connection to db
 mongoose
-  .connect(db)
+  .connect(db, { useNewUrlParser: true })
   .then(() => console.log("Succesfully connected to db!"))
   .catch((err) => console.log(err));
-//vars
+
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -18,6 +23,11 @@ const port = process.env.PORT || 5000;
 app.get("/", (req, res) => {
   res.send("You made it!");
 });
+
+//User routes
+app.use("/api/auth", auth);
+app.use("/api/profile", profile);
+app.use("/api/posts", posts);
 
 //server start listening
 app.listen(port, () => {
