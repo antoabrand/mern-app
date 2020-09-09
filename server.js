@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
   res.send("You made it!");
 });
 
-//User routes
+//use routes
 app.use("/api/auth", auth);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
