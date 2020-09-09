@@ -15,9 +15,9 @@ router.get("/test", (req, res) => {
 
 // allow user to register - public api
 router.post("/register", (req, res) => {
-  //check is user is already registered
   const { email, name, password } = req.body;
 
+  //check if user is already registered
   User.findOne({ email }).then((user) => {
     //check db if user exists then don't try to create a new user
     if (user)
@@ -43,16 +43,14 @@ router.post("/register", (req, res) => {
 
       //encrypt their pw before sending to db
       bcryptjs.genSalt(10, (err, salt) => {
-        bcryptjs.hash(newUser.password, salt, (err, hash) => {
+        bcryptjs.hash(newUser.password, salt, function (err, hash) {
           if (err) throw err;
-          
+
           newUser.password = hash;
           newUser.save((user) => {
             try {
               res.json(user);
-            } catch (err) {
-              console.log(err);
-            }
+            } catch (err) {}
           });
         });
       });
@@ -63,14 +61,14 @@ router.post("/register", (req, res) => {
 // validate that user is registered and return a token for use in other routes
 router.post("/token", (req, res) => {
   const { email, password } = req.body;
+
   User.findOne({ email }).then((user) => {
     if (!user) {
       res.status(400).json({ message: "user does not exist" });
     }
 
-    bcryptjs.compare(password, user.password, (isValid) => {
+    bcryptjs.compare(password, user.password, (err, isValid) => {
       if (isValid) {
-        console.log(secret);
         // token payload - used to sign token
         const payload = {
           id: user.id,
