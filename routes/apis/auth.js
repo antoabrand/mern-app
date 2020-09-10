@@ -2,10 +2,9 @@ const bcryptjs = require("bcryptjs");
 const express = require("express");
 const gravatar = require("gravatar");
 const jwt = require("jsonwebtoken");
+const passport = require("passport");
 const router = express.Router();
 const secret = require("../../configs/keys").secret;
-const passport = require('passport'); 
-
 const User = require("../../models/User");
 
 router.get("/test", (req, res) => {
@@ -68,15 +67,17 @@ router.post("/token", (req, res) => {
       res.status(400).json({ message: "user does not exist" });
     }
 
+    const { id, name, avatar } = user;
+
     bcryptjs.compare(password, user.password, (err, isValid) => {
       if (isValid) {
         // token payload - used to sign token
         const payload = {
-          id: user.id,
-          name: user.name,
-          avatar: user.avatar,
+          id,
+          name,
+          avatar,
         };
-        //sign tokene
+        //sign token
         jwt.sign(payload, secret, { expiresIn: 3600 }, (err, token) => {
           res.json({
             sucess: true,
@@ -90,8 +91,12 @@ router.post("/token", (req, res) => {
   });
 });
 
-router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
-  res.json({msg: 'success'})
-})
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json({ msg: "success" });
+  }
+);
 
 module.exports = router;

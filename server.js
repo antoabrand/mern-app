@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 
 //initialize passport middleware
 app.use(passport.initialize());
-require('./configs/passport')(passport)
+require("./configs/passport")(passport);
 
 //use routes
 app.use("/api/auth", auth);
