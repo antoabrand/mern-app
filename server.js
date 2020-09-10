@@ -8,6 +8,7 @@ const passport = require("passport");
 const auth = require("./routes/apis/auth");
 const profile = require("./routes/apis/profile");
 const posts = require("./routes/apis/social-posts");
+const user = require("./routes/apis/user");
 
 //db configs
 const db = require("./configs/keys").mongoURI;
@@ -32,6 +33,7 @@ require("./configs/passport")(passport);
 app.use("/api/auth", auth);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
+app.use("/api/users", user);
 
 //server start listening
 app.listen(port, () => {

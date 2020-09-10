@@ -91,12 +91,4 @@ router.post("/token", (req, res) => {
   });
 });
 
-router.get(
-  "/current",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    res.json({ msg: "success" });
-  }
-);
-
 module.exports = router;
