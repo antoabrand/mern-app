@@ -49,11 +49,15 @@ router.post("/", (req, res) => {
           if (err) throw err;
 
           newUser.password = hash;
-          newUser.save((user) => {
-            try {
+
+          newUser
+            .save(user)
+            .then((user) => {
               res.json(user);
-            } catch (err) {}
-          });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         });
       });
     }

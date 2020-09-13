@@ -5,6 +5,8 @@ module.exports = function isRegistrationValid(data) {
   const errors = {};
   const { name, email, password } = data;
 
+  console.log(data);
+  
   if (name && !Validator.isLength(name, { min: 2, max: 30 })) {
     errors.name = "name must be between 2 and 30 characters";
   }
