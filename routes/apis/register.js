@@ -7,17 +7,17 @@ const router = express.Router();
 const secret = require("../../configs/keys").secret;
 const User = require("../../models/User");
 
-const validation = require("../../validations/register");
+const validateRegistration = require("../../validations/registerValidation");
 
 // allow user to register - public api
 router.post("/", (req, res) => {
-  const { email, name, password } = req.body;
-
-  const { errors, isValid } = validation(req.body);
+  const { errors, isValid } = validateRegistration(req.body);
 
   if (!isValid) {
     res.status(400).json({ errors });
   }
+
+  const { email, name, password } = req.body;
 
   //check if user is already registered
   User.findOne({ email }).then((user) => {
