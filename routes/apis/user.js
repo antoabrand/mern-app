@@ -29,7 +29,6 @@ router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    // res.json({msg: "Success inside get all users"})
     User.find({}, ["name", "email", "avatar"]).then((users) => {
       res.json(users);
     });

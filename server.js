@@ -9,6 +9,7 @@ const auth = require("./routes/apis/auth");
 const profile = require("./routes/apis/profile");
 const posts = require("./routes/apis/social-posts");
 const user = require("./routes/apis/user");
+const register = require("./routes/apis/register");
 
 //db configs
 const db = require("./configs/keys").mongoURI;
@@ -34,6 +35,7 @@ app.use("/api/auth", auth);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
 app.use("/api/users", user);
+app.use("/api/register", register);
 
 //server start listening
 app.listen(port, () => {
