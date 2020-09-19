@@ -1,17 +1,24 @@
-const Validator = require('validator');
+const Validator = require("validator");
+const isEmpty = require("../utils/isEmpty");
 
-module.exports = function loginValidation(data) {
+module.exports = function isLoginValid(data) {
   const errors = {};
+  const { email = '', password = '' } = data;
 
-  const {name} = data; 
-  
-
-  if(!Validator.isLength(name, {min: 2, max: 20})){
-    erros.name = "name must be between 2 and 20 characters"
+  if (!Validator.isEmpty(name)) {
+    errors.name = "name is required"
   }
 
-  return ({
+  if (email && !Validator.isEmail(email)) {
+    errors.email = "email must be valid email address";
+  }
+
+  if (password && !Validator.isLength(password, { min: 5 })) {
+    errors.password = "password must be at least 5 characters long";
+  }
+
+  return {
     errors,
-    isValid: isEmpty(errors)
-  });
-}
+    isValid: isEmpty(errors),
+  };
+};
