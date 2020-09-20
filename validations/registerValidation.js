@@ -3,7 +3,7 @@ const isEmpty = require("../utils/isEmpty");
 
 module.exports = function isRegistrationValid(data) {
   const errors = {};
-  const { name = '', email = '', password = '' } = data;
+  const { name = "", email = "", password = "", password2 = "" } = data;
 
   console.log(data);
 
@@ -12,7 +12,7 @@ module.exports = function isRegistrationValid(data) {
   }
 
   if (!Validator.isEmpty(name)) {
-    errors.name = "name is required"
+    errors.name = "name is required";
   }
 
   if (email && !Validator.isEmail(email)) {
@@ -21,6 +21,10 @@ module.exports = function isRegistrationValid(data) {
 
   if (password && !Validator.isLength(password, { min: 5 })) {
     errors.password = "password must be at least 5 characters long";
+  }
+
+  if (password && password2 && password !== password2) {
+    errors.password = "passwords don't match";
   }
 
   return {

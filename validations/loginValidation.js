@@ -3,10 +3,10 @@ const isEmpty = require("../utils/isEmpty");
 
 module.exports = function isLoginValid(data) {
   const errors = {};
-  const { email = '', password = '' } = data;
+  const { email = "", password = "" } = data;
 
   if (!Validator.isEmpty(name)) {
-    errors.name = "name is required"
+    errors.name = "name is required";
   }
 
   if (email && !Validator.isEmail(email)) {
